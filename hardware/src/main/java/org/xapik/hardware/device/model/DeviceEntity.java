@@ -13,7 +13,6 @@ import lombok.Setter;
 @Table(name = "device")
 public class DeviceEntity {
 
-
   @Id
   @Getter
   @GeneratedValue(strategy = GenerationType.IDENTITY)
