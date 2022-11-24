@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.xapik.crypto.users.users.model.UserEntity;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+public interface UserRepository extends JpaRepository<UserEntity, String> {
 
   UserEntity findUserEntityByEmail(String email);
 }

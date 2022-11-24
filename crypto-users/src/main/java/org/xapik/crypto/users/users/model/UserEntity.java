@@ -16,10 +16,6 @@ public class UserEntity {
 
   @Id
   @Getter
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
-
-  @Getter
   @Setter
   @Column
   private String email;
