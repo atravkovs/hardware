@@ -6,9 +6,15 @@
   </div>
 
   <ng-container *ngIf="devices$ | async; let devices">
-    <div class="row mb-3 mt-3">
-      <div class="col">
-        <strong>Total</strong> {{ devices.totalElements }} devices
+    <div class="d-flex mb-3 mt-3 justify-content-between">
+      <div><strong>Total</strong> {{ devices.totalElements }} devices</div>
+      <div>
+        <button
+          [routerLink]="['/devices/create']"
+          class="btn btn-outline-primary btn-lg"
+        >
+          Create device
+        </button>
       </div>
     </div>
 
@@ -21,7 +27,7 @@
             </div>
             <div class="ms-3 pt-4">
               <div class="name-font">{{ device.name }}</div>
-              <div class="secondary-font">Code {{ device.code }}</div>
+              <div class="secondary-font">Code #{{ device.code }}</div>
             </div>
           </div>
         </app-card>

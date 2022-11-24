@@ -1,3 +1,4 @@
+import { NewDevice } from './../models/new-device.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -12,5 +13,9 @@ export class HardwareRepositoryService {
 
   getDevices(): Observable<Page<Device>> {
     return this.http.get<Page<Device>>('/api/hardware/device');
+  }
+
+  createDevice(device: NewDevice): Observable<Device> {
+    return this.http.post<Device>(`/api/hardware/device`, device);
   }
 }

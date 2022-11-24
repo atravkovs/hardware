@@ -25,7 +25,7 @@ public class DeviceEntity {
   @Getter
   @Setter
   @OneToMany
-  @JoinColumn(name = "code")
+  @JoinColumn(name = "device_code")
   private Set<DeviceUserEntity> deviceUsers;
 
 }

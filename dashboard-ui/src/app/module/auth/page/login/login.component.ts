@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -18,6 +19,8 @@ export class LoginComponent {
     ]),
   });
 
+  errorMessage: string | null = null;
+
   constructor(private authService: AuthService) {}
 
   get email() {
@@ -35,7 +38,12 @@ export class LoginComponent {
           email: this.email?.value,
           password: this.password?.value,
         })
-        .subscribe(() => {});
+        .subscribe({
+          error: () => {
+            this.errorMessage =
+              'Provided data are not valid, please try again';
+          },
+        });
     }
   }
 }
