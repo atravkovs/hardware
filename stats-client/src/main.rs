@@ -7,11 +7,29 @@ use clap::Parser;
 use clokwerk::{AsyncScheduler, TimeUnits};
 use systemstat::{saturating_sub_bytes, Platform, System};
 
+/// Device Client to report it's statistics to InfluxDB
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
+    /// Frequency of reporting in seconds
     #[arg(short, long, default_value_t = 5)]
     interval: u32,
+
+    /// InfluxDB Host
+    #[arg(long)]
+    host: String,
+
+    /// InfluxDB Authentication token
+    #[arg(short, long)]
+    token: String,
+
+    /// InfluxDB Bucket
+    #[arg(short, long)]
+    bucket: String,
+
+    /// Hardware Device Code
+    #[arg(short, long)]
+    device: String,
 }
 
 #[tokio::main]
