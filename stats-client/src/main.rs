@@ -1,13 +1,14 @@
-use futures::prelude::*;
 use influxdb2::models::DataPoint;
-use influxdb2::Client;
-use std::time::Duration;
+use std::{sync::Arc, time::Duration};
+
+mod client;
+use client::HardwareClient;
 
 use clap::Parser;
 use clokwerk::{AsyncScheduler, TimeUnits};
 use systemstat::{saturating_sub_bytes, Platform, System};
 
-/// Device Client to report it's statistics to InfluxDB
+/// Device Client to report it's statistics to InfluxDB. By Artjoms Travkovs at20057
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
@@ -23,25 +24,42 @@ struct Args {
     #[arg(short, long)]
     token: String,
 
-    /// InfluxDB Bucket
-    #[arg(short, long)]
-    bucket: String,
-
     /// Hardware Device Code
     #[arg(short, long)]
     device: String,
 }
 
+async fn iteration(client: &HardwareClient) -> Result<(), Box<dyn std::error::Error>> {
+    let used_memory = get_used_memory().unwrap();
+
+    let points = vec![DataPoint::builder("memory")
+        .field("used", used_memory)
+        .build()?];
+
+    client.send(points).await.unwrap();
+
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // report().await?;
-
     let args = Args::parse();
     let mut scheduler = AsyncScheduler::new();
+    let client = HardwareClient::new(
+        args.host,
+        String::from("at20057"),
+        args.token,
+        args.device,
+    );
 
-    scheduler.every(args.interval.second()).run(|| async {
-        let used_memory = get_used_memory().unwrap();
-        send(used_memory).await.unwrap();
+    let client_arc = Arc::new(client);
+
+    scheduler.every(args.interval.second()).run(move || {
+        let cc = client_arc.clone();
+
+        async move {
+            iteration(&cc).await.unwrap();
+        }
     });
 
     // Manually run the scheduler forever
@@ -68,22 +86,4 @@ fn get_used_memory() -> Result<i64, Box<dyn std::error::Error>> {
             Err(Box::new(x))
         }
     }
-}
-
-async fn send(used_memory: i64) -> Result<(), Box<dyn std::error::Error>> {
-    let host = "http://localhost:8086/";
-    let org = "at20057";
-    let token =
-        "RAel9ad3CDN3ZqMNF4itRoUBK7oromilf-cMH4blhwlC-HQpCyTK0TWXV-Y9AbQXMPebfxrR9H1hq6q9i6WZfg==";
-    let bucket = "test";
-    let client = Client::new(host, org, token);
-
-    let points = vec![DataPoint::builder("memory")
-        .tag("device", "test123")
-        .field("used", used_memory)
-        .build()?];
-
-    client.write(bucket, stream::iter(points)).await?;
-
-    Ok(())
 }
