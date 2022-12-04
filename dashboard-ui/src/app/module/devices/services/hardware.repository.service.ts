@@ -11,6 +11,10 @@ import { Device } from '../models/device.model';
 export class HardwareRepositoryService {
   constructor(private http: HttpClient) {}
 
+  getDeviceByCode(code: number): Observable<Device> {
+    return this.http.get<Device>(`/api/hardware/device/${code}`);
+  }
+
   getDevices(): Observable<Page<Device>> {
     return this.http.get<Page<Device>>('/api/hardware/device');
   }

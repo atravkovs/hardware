@@ -5,6 +5,7 @@ import { WrappersModule } from '../shared/wrappers/wrappers.module';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateDeviceComponent } from './page/create-device/create-device.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DeviceDetailsComponent } from './page/device-details/device-details.component';
 
 const routes: Routes = [
   {
@@ -15,10 +16,18 @@ const routes: Routes = [
     path: 'create',
     component: CreateDeviceComponent,
   },
+  {
+    path: ':deviceId',
+    component: DeviceDetailsComponent,
+  },
 ];
 
 @NgModule({
-  declarations: [DeviceListComponent, CreateDeviceComponent],
+  declarations: [
+    DeviceListComponent,
+    CreateDeviceComponent,
+    DeviceDetailsComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

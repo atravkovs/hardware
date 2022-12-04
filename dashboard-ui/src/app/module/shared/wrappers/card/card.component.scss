@@ -4,4 +4,9 @@
   border-radius: 8px;
 
   padding: 0 20px;
+
+  &.active:hover {
+    cursor: pointer;
+    background-color: #CADBF1;
+  }
 }

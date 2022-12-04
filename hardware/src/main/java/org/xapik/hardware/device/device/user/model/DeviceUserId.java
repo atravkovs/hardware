@@ -8,6 +8,6 @@ import java.io.Serializable;
 public class DeviceUserId implements Serializable {
 
     private DeviceEntity device;
-    private long userEmail;
+    private String userEmail;
 
 }

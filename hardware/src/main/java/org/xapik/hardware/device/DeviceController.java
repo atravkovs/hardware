@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.xapik.hardware.device.device.main.model.DeviceEntity;
 import org.xapik.hardware.device.device.main.model.NewDeviceDTO;
+import org.xapik.hardware.device.device.user.model.NewDeviceUserDTO;
 
 import javax.validation.Valid;
 
@@ -33,12 +34,19 @@ public class DeviceController {
         return ResponseEntity.ok(this.deviceService.createDevice(newDeviceDTO));
     }
 
-    @PostMapping("/{deviceId}/user/{userEmail}")
+    @GetMapping("/{deviceCode}")
+    public ResponseEntity<DeviceEntity> getDevice(
+            @PathVariable Integer deviceCode
+    ) {
+        return ResponseEntity.ok(this.deviceService.getDevice(deviceCode.longValue()));
+    }
+
+    @PostMapping("/{deviceId}/user")
     public ResponseEntity<DeviceEntity> assignDevice(
             @PathVariable("deviceId") Integer deviceId,
-            @PathVariable("userEmail") String userEmail
+            @Valid @RequestBody NewDeviceUserDTO deviceUserDTO
     ) {
-        return ResponseEntity.ok(this.deviceService.assignDevice(deviceId, userEmail));
+        return ResponseEntity.ok(this.deviceService.assignDevice(deviceId.longValue(), deviceUserDTO));
     }
 
 }
