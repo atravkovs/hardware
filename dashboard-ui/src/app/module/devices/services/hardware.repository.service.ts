@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from '../../shared/models/page.model';
 import { Device } from '../models/device.model';
+import { NewDeviceUser } from '../models/new-device-user.model';
+import { DeviceUser } from '../models/device-user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,5 +23,15 @@ export class HardwareRepositoryService {
 
   createDevice(device: NewDevice): Observable<Device> {
     return this.http.post<Device>(`/api/hardware/device`, device);
+  }
+
+  assignDevice(
+    deviceId: number,
+    newDeviceUser: NewDeviceUser
+  ): Observable<DeviceUser> {
+    return this.http.post<DeviceUser>(
+      `/api/hardware/device/${deviceId}/user`,
+      newDeviceUser
+    );
   }
 }

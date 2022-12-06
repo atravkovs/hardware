@@ -5,61 +5,41 @@
     </div>
   </div>
 
-  <div class="row mt-2">
-    <div class="col" *ngIf="device$ | async; let device">
-      <app-card>
-        <div class="d-flex">
-          <div>
-            <i class="bi bi-pc"></i>
-          </div>
-          <div class="ms-3 pt-4">
-            <div class="name-font">{{ device.name }}</div>
-            <div class="secondary-font">Code #{{ device.code }}</div>
-          </div>
-        </div>
-      </app-card>
-    </div>
-
-    <ng-container *ngIf="deviceError$ | async; let deviceError">
+  <ng-container *ngIf="deviceError$ | async; let deviceError">
+    <div class="row mt-2">
       <div class="col" *ngIf="deviceError?.error">
         <div class="alert alert-danger" role="alert">
           {{ deviceError.error.message }}
         </div>
       </div>
-    </ng-container>
-  </div>
-
-  <div class="row mt-3">
-    <div class="col">
-      <h4>Device Users</h4>
     </div>
-  </div>
+  </ng-container>
 
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-3">
-          <div class="">
-            <input
-              type="email"
-              name="email"
-              id="emailInput"
-              placeholder="Email address"
-              class="form-control form-control-lg"
-            />
+  <ng-container *ngIf="device$ | async; let device">
+    <div class="row mt-2">
+      <div class="col">
+        <app-card>
+          <div class="d-flex">
+            <div>
+              <i class="bi bi-pc"></i>
+            </div>
+            <div class="ms-3 pt-4">
+              <div class="name-font">{{ device.name }}</div>
+              <div class="secondary-font">Code #{{ device.code }}</div>
+            </div>
           </div>
-        </div>
-        <div class="col-9">
-          <button
-            type="submit"
-            class="btn btn-primary btn-lg"
-          >
-            Add user
-          </button>
-        </div>
+        </app-card>
       </div>
     </div>
-  </div>
+
+    <div class="row mt-3">
+      <div class="col">
+        <h4>Device Users</h4>
+      </div>
+    </div>
+
+    <app-add-user [deviceId]="device.code"></app-add-user>
+  </ng-container>
 
   <!-- <ng-container *ngIf="users$ | async; let users">
     <div class="row mb-3 mt-3">
