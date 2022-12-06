@@ -1,5 +1,6 @@
 package org.xapik.crypto.users.users;
 
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.xapik.crypto.users.users.model.UserAlreadyExistsException;
 import org.xapik.crypto.users.users.model.UserRegistrationRequest;
 import org.xapik.crypto.users.users.model.UserEntity;
@@ -31,6 +33,10 @@ public class UserService {
         .withPage(pageNumber);
 
     return this.userRepository.findAll(pageable);
+  }
+
+  public List<UserEntity> getUsersByEmails(List<String> emails) {
+    return this.userRepository.findUserEntityByEmailIn(emails);
   }
 
   public UserEntity getUser(String email) {

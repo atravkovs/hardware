@@ -25,12 +25,18 @@ export class HardwareRepositoryService {
     return this.http.post<Device>(`/api/hardware/device`, device);
   }
 
+  getDeviceUsers(deviceCode: number): Observable<DeviceUser[]> {
+    return this.http.get<DeviceUser[]>(
+      `/api/hardware/device/${deviceCode}/user`
+    );
+  }
+
   assignDevice(
-    deviceId: number,
+    deviceCode: number,
     newDeviceUser: NewDeviceUser
   ): Observable<DeviceUser> {
     return this.http.post<DeviceUser>(
-      `/api/hardware/device/${deviceId}/user`,
+      `/api/hardware/device/${deviceCode}/user`,
       newDeviceUser
     );
   }

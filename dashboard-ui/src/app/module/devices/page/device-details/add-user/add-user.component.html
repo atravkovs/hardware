@@ -1,3 +1,13 @@
+<ng-container *ngIf="errorMessage">
+  <div class="row mt-2">
+    <div class="col">
+      <div class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+</ng-container>
+
 <div class="card">
   <div class="card-body">
     <form [formGroup]="addUserForm" (ngSubmit)="addDeviceUser()">

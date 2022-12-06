@@ -1,5 +1,6 @@
 package org.xapik.hardware.device;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,13 @@ public class DeviceController {
       @PathVariable Integer deviceCode
   ) {
     return ResponseEntity.ok(this.deviceService.getDeviceByCode(deviceCode.longValue()));
+  }
+
+  @GetMapping("/{deviceId}/user")
+  public ResponseEntity<List<DeviceUserDTO>> getAssignedDevices(
+      @PathVariable("deviceId") Integer deviceId
+  ) {
+    return ResponseEntity.ok(this.deviceService.getAssignedDevices(deviceId));
   }
 
   @PostMapping("/{deviceId}/user")

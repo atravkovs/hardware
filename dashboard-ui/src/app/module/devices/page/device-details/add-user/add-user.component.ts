@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HardwareRepositoryService } from '../../../services/hardware.repository.service';
 
@@ -12,8 +13,13 @@ export class AddUserComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
   });
 
+  errorMessage: string | null = null;
+
   @Input()
   deviceId: number = 0;
+
+  @Output()
+  addUser: EventEmitter<string> = new EventEmitter();
 
   constructor(private hardwareRepository: HardwareRepositoryService) {}
 
@@ -32,8 +38,14 @@ export class AddUserComponent implements OnInit {
       .assignDevice(this.deviceId, {
         email: this.email?.value,
       })
-      .subscribe(() => {
-        this.email?.setValue('');
+      .subscribe({
+        next: () => {
+          this.addUser.emit(this.email?.value);
+          this.email?.setValue('');
+        },
+        error: ({ error }: HttpErrorResponse) => {
+          this.errorMessage = error.message;
+        },
       });
   }
 }

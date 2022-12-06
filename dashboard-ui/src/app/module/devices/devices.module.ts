@@ -7,6 +7,7 @@ import { CreateDeviceComponent } from './page/create-device/create-device.compon
 import { ReactiveFormsModule } from '@angular/forms';
 import { DeviceDetailsComponent } from './page/device-details/device-details.component';
 import { AddUserComponent } from './page/device-details/add-user/add-user.component';
+import { UsersModule } from '../users/users.module';
 
 const routes: Routes = [
   {
@@ -31,6 +32,7 @@ const routes: Routes = [
     AddUserComponent,
   ],
   imports: [
+    UsersModule,
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),

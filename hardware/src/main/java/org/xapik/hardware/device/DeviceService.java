@@ -1,5 +1,7 @@
 package org.xapik.hardware.device;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,9 +43,7 @@ public class DeviceService {
   }
 
   public Page<DeviceDTO> getDevices(int pageNumber, int pageSize) {
-    var pageable = Pageable
-        .ofSize(pageSize)
-        .withPage(pageNumber);
+    var pageable = Pageable.ofSize(pageSize).withPage(pageNumber);
 
     var devices = this.deviceRepository.findAll(pageable);
 
@@ -69,6 +69,12 @@ public class DeviceService {
 
   public DeviceDTO getDeviceByCode(long deviceCode) {
     return getDeviceDto(getDevice(deviceCode));
+  }
+
+  public List<DeviceUserDTO> getAssignedDevices(long deviceCode) {
+    DeviceEntity device = getDevice(deviceCode);
+
+    return device.getDeviceUsers().stream().map(this::getDeviceUserDto).toList();
   }
 
   public DeviceUserDTO assignDevice(long deviceCode, NewDeviceUserDTO deviceUserDTO) {

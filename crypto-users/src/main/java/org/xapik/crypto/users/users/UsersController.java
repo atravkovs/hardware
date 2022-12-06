@@ -1,5 +1,6 @@
 package org.xapik.crypto.users.users;
 
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,11 @@ public class UsersController {
   public Page<UserEntity> getUsers(@RequestParam(defaultValue = "0") Integer page,
       @RequestParam(defaultValue = "5") Integer pageSize) {
     return this.userService.getUsers(page, pageSize);
+  }
+
+  @GetMapping("/users/emails")
+  public List<UserEntity> getUsersByEmails(@RequestParam List<String> emails) {
+    return this.userService.getUsersByEmails(emails);
   }
 
   @PostMapping("/register")

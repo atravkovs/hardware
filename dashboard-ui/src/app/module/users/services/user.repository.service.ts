@@ -13,4 +13,10 @@ export class UserRepositoryService {
   getUsers(): Observable<Page<User>> {
     return this.http.get<Page<User>>('/api/users/users');
   }
+
+  getUsersByEmails(emails: string[]): Observable<User[]> {
+    return this.http.get<User[]>(`/api/users/users/emails`, {
+      params: { emails },
+    });
+  }
 }
