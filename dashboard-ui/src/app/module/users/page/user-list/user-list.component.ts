@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { User } from 'src/app/module/shared/user/models/user.model';
 import { Page } from '../../../shared/models/page.model';
-import { User } from '../../models/user.model';
-import { UserRepositoryService } from '../../services/user.repository.service';
+import { UserRepositoryService } from '../../../shared/user/services/user.repository.service';
 
 @Component({
   selector: 'app-user-list',

@@ -7,7 +7,7 @@ import { CreateDeviceComponent } from './page/create-device/create-device.compon
 import { ReactiveFormsModule } from '@angular/forms';
 import { DeviceDetailsComponent } from './page/device-details/device-details.component';
 import { AddUserComponent } from './page/device-details/add-user/add-user.component';
-import { UsersModule } from '../users/users.module';
+import { UserModule } from '../shared/user/user.module';
 
 const routes: Routes = [
   {
@@ -32,11 +32,11 @@ const routes: Routes = [
     AddUserComponent,
   ],
   imports: [
-    UsersModule,
+    RouterModule.forChild(routes),
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes),
     WrappersModule,
+    UserModule,
   ],
 })
 export class DevicesModule {}

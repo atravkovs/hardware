@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserListComponent } from './page/user-list/user-list.component';
 import { RouterModule, Routes } from '@angular/router';
 import { WrappersModule } from '../shared/wrappers/wrappers.module';
-import { UserListByEmailsComponent } from './component/user-list-by-emails/user-list-by-emails.component';
+import { UserModule } from '../shared/user/user.module';
 
 const routes: Routes = [
   {
@@ -13,8 +13,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [UserListComponent, UserListByEmailsComponent],
-  imports: [CommonModule, RouterModule.forChild(routes), WrappersModule],
-  exports: [UserListByEmailsComponent],
+  declarations: [UserListComponent],
+  imports: [
+    CommonModule,
+    UserModule,
+    RouterModule.forChild(routes),
+    WrappersModule,
+  ],
 })
 export class UsersModule {}

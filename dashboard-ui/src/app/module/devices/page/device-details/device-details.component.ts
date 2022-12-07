@@ -1,9 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { catchError, map, Observable, of, Subscription, switchMap } from 'rxjs';
-import { User } from 'src/app/module/users/models/user.model';
-import { DeviceUser } from '../../models/device-user.model';
 import { Device } from '../../models/device.model';
 import { HardwareRepositoryService } from '../../services/hardware.repository.service';
 
