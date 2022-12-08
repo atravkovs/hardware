@@ -1,4 +1,4 @@
-package org.xapik.hardware.device.device.main.model;
+package org.xapik.hardware.device.main.model;
 
 public class DeviceNotFoundException extends RuntimeException {
 

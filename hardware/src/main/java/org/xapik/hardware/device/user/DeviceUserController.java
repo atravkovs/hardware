@@ -1,0 +1,40 @@
+package org.xapik.hardware.device.user;
+
+import java.util.List;
+import javax.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.xapik.hardware.device.user.model.DeviceUserDTO;
+import org.xapik.hardware.device.user.model.NewDeviceUserDTO;
+
+@RestController
+@RequestMapping("/device/{deviceCode}/users")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+public class DeviceUserController {
+
+  private final DeviceUserService deviceUserService;
+
+  @GetMapping("")
+  public ResponseEntity<List<DeviceUserDTO>> getAssignedDevices(
+      @PathVariable("deviceCode") Integer deviceCode
+  ) {
+    return ResponseEntity.ok(this.deviceUserService.getAssignedDevices(deviceCode));
+  }
+
+  @PostMapping("")
+  public ResponseEntity<DeviceUserDTO> assignDevice(
+      @PathVariable("deviceCode") Integer deviceCode,
+      @Valid @RequestBody NewDeviceUserDTO deviceUserDTO
+  ) {
+    return ResponseEntity.ok(
+        this.deviceUserService.assignDevice(deviceCode.longValue(), deviceUserDTO));
+  }
+
+}

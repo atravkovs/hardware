@@ -1,10 +1,10 @@
-package org.xapik.hardware.device.device.main.model;
+package org.xapik.hardware.device.main.model;
 
 import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.xapik.hardware.device.device.user.model.DeviceUserEntity;
+import org.xapik.hardware.device.user.model.DeviceUserEntity;
 
 import java.util.Set;
 

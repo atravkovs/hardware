@@ -1,4 +1,4 @@
-package org.xapik.hardware.device.device.main.model;
+package org.xapik.hardware.device.main.model;
 
 import lombok.Getter;
 import lombok.Setter;
