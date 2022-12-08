@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/module/auth/services/auth.service';
-import { TokenService } from 'src/app/module/auth/services/token.service';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +11,10 @@ export class HeaderComponent {
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
   }
 
   logout(event: Event) {

@@ -23,7 +23,7 @@
             >Home</a
           >
         </li>
-        <ng-template [ngIf]="isLoggedIn()">
+        <ng-template [ngIf]="isLoggedIn() && isAdmin()">
           <li class="nav-item">
             <a
               [routerLink]="['/users']"

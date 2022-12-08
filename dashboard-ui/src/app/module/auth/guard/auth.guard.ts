@@ -16,14 +16,19 @@ export class AuthGuard implements CanActivate {
   constructor(private tokenService: TokenService, private router: Router) {}
 
   canActivate(
-    _route: ActivatedRouteSnapshot,
+    route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ):
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.tokenService.isLoggedIn()) {
+    const user = this.tokenService.getUser();
+    if (
+      this.tokenService.isLoggedIn() &&
+      route.data['roles'] &&
+      route.data['roles'].includes(user?.role)
+    ) {
       return true;
     }
 

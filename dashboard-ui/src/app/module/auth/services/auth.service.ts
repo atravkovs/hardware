@@ -4,6 +4,7 @@ import { concatMap, tap } from 'rxjs';
 import { LoginDTO, RegistrationDTO, registrationDtoToLoginDto } from '../models/login.model';
 import { TokenService } from './token.service';
 import { AuthenticationRepository } from './authentication.repository';
+import { UserRole } from '../models/user-role.enum';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,16 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return this.tokenService.isLoggedIn();
+  }
+
+  isAdmin(): boolean {
+    const user = this.tokenService.getUser();
+
+    if (!user) {
+      return false;
+    }
+
+    return user.role === UserRole.Admin;
   }
 
   login(loginDto: LoginDTO) {

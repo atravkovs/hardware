@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './module/auth/guard/auth.guard';
+import { UserRole } from './module/auth/models/user-role.enum';
 
 const routes: Routes = [
   {
@@ -8,12 +9,18 @@ const routes: Routes = [
     loadChildren: () =>
       import('./module/devices/devices.module').then((m) => m.DevicesModule),
     canActivate: [AuthGuard],
+    data: {
+      roles: [UserRole.Admin],
+    },
   },
   {
     path: 'users',
     loadChildren: () =>
       import('./module/users/users.module').then((m) => m.UsersModule),
     canActivate: [AuthGuard],
+    data: {
+      roles: [UserRole.Admin],
+    },
   },
   {
     path: '',
@@ -22,6 +29,9 @@ const routes: Routes = [
         (m) => m.DashboardModule
       ),
     canActivate: [AuthGuard],
+    data: {
+      roles: [UserRole.Admin, UserRole.User],
+    },
   },
   {
     path: '',
