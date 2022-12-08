@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,12 +21,12 @@ import org.xapik.crypto.users.users.model.UserRegistrationRequest;
 
 @CrossOrigin
 @RestController
-public class UsersController {
+public class UserController {
 
   private final UserService userService;
 
   @Autowired
-  public UsersController(UserService userService) {
+  public UserController(UserService userService) {
     this.userService = userService;
   }
 
@@ -52,6 +54,13 @@ public class UsersController {
       return ResponseEntity.status(HttpStatus.FORBIDDEN)
           .body(new GenericError(e.getLocalizedMessage()));
     }
+  }
+
+  @DeleteMapping("/user/{email}")
+  public ResponseEntity<?> deleteUser(@PathVariable String email) {
+    userService.deleteUser(email);
+
+    return ResponseEntity.ok().build();
   }
 
 }

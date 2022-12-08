@@ -2,6 +2,15 @@
   font-size: 64px;
 }
 
+.bi-trash {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.trash-container {
+  padding-top: 30px;
+}
+
 .name-font {
   font-family: "Roboto";
   font-style: normal;
@@ -24,6 +33,5 @@
   /* identical to box height */
 
   /* Black */
-
   color: #333333;
 }

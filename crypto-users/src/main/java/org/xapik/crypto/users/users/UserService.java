@@ -62,4 +62,10 @@ public class UserService {
 
     return userRepository.save(newUser);
   }
+
+  public void deleteUser(String email) {
+    UserEntity existingUser = this.getUser(email);
+
+    userRepository.delete(existingUser);
+  }
 }

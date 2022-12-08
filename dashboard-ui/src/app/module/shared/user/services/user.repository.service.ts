@@ -10,6 +10,10 @@ import { User } from '../models/user.model';
 export class UserRepositoryService {
   constructor(private http: HttpClient) {}
 
+  deleteUser(email: string): Observable<unknown> {
+    return this.http.delete(`/api/users/user/${email}`);
+  }
+
   getUsers(): Observable<Page<User>> {
     return this.http.get<Page<User>>('/api/users/users');
   }
