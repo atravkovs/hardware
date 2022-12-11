@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Device } from 'src/app/module/devices/models/device.model';
 import { User } from 'src/app/module/shared/user/models/user.model';
+import { DeviceRepositoryService } from '../../services/device.repository.service';
 import { UserRepositoryService } from '../../services/user.repository.service';
 
 @Component({
@@ -10,10 +12,15 @@ import { UserRepositoryService } from '../../services/user.repository.service';
 })
 export class MainComponent implements OnInit {
   user$: Observable<User> | null = null;
+  devices$: Observable<Device[]> | null = null;
 
-  constructor(private userRepository: UserRepositoryService) {}
+  constructor(
+    private userRepository: UserRepositoryService,
+    private deviceRepository: DeviceRepositoryService
+  ) {}
 
   ngOnInit(): void {
     this.user$ = this.userRepository.getCurrentUser();
+    this.devices$ = this.deviceRepository.getUserDevices();
   }
 }
