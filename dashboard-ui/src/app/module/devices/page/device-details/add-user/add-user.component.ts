@@ -16,7 +16,7 @@ export class AddUserComponent implements OnInit {
   errorMessage: string | null = null;
 
   @Input()
-  deviceId: number = 0;
+  deviceCode: number = 0;
 
   @Output()
   addUser: EventEmitter<string> = new EventEmitter();
@@ -35,7 +35,7 @@ export class AddUserComponent implements OnInit {
     }
 
     this.hardwareRepository
-      .assignDevice(this.deviceId, {
+      .assignDevice(this.deviceCode, {
         email: this.email?.value,
       })
       .subscribe({

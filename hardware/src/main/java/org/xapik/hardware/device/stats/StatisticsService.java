@@ -14,14 +14,14 @@ public class StatisticsService {
 
   private final InfluxDBClient influxDBClient;
 
-  public List<MemoryPoint> getStatistics(long deviceCode) {
+  public List<MemoryPoint> getStatistics(long deviceCode, String fromIsoDate, String toIsoDate) {
     String flux = String.format("""
         from(bucket: "d%d")
-          |> range(start: 0)
+          |> range(start: %s, stop: %s)
           |> filter(fn: (r) => r["_measurement"] == "memory")
           |> filter(fn: (r) => r["_field"] == "used")
           |> yield(name: "mean")
-          """, deviceCode);
+          """, deviceCode, fromIsoDate, toIsoDate);
 
     QueryApi queryApi = influxDBClient.getQueryApi();
 

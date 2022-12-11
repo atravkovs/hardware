@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col">
+    <h4>Device Statistics</h4>
+  </div>
+</div>
+
+<div class="row mt-3" *ngIf="deviceChartData$ | async; let deviceChartData">
+  <div class="col">
+    <canvas
+      height="400px"
+      width="800px"
+      baseChart
+      class="chart"
+      [data]="deviceChartData"
+      [options]="chartOptions"
+      [type]="'line'"
+    ></canvas>
+  </div>
+</div>

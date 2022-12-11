@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { NgChartsModule } from 'ng2-charts';
 import { CommonModule } from '@angular/common';
 import { DeviceListComponent } from './page/device-list/device-list.component';
 import { WrappersModule } from '../shared/wrappers/wrappers.module';
@@ -8,19 +9,31 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DeviceDetailsComponent } from './page/device-details/device-details.component';
 import { AddUserComponent } from './page/device-details/add-user/add-user.component';
 import { UserModule } from '../shared/user/user.module';
+import { UserRole } from '../auth/models/user-role.enum';
+import { AuthGuard } from '../auth/guard/auth.guard';
+import { DeviceStatisticsComponent } from './page/device-details/device-statistics/device-statistics.component';
+import { DeviceUsersComponent } from './page/device-details/device-users/device-users.component';
 
 const routes: Routes = [
   {
+    path: ':deviceId',
+    component: DeviceDetailsComponent,
+  },
+  {
     path: '',
     component: DeviceListComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [UserRole.Admin],
+    },
   },
   {
     path: 'create',
     component: CreateDeviceComponent,
-  },
-  {
-    path: ':deviceId',
-    component: DeviceDetailsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [UserRole.Admin],
+    },
   },
 ];
 
@@ -30,6 +43,8 @@ const routes: Routes = [
     CreateDeviceComponent,
     DeviceDetailsComponent,
     AddUserComponent,
+    DeviceUsersComponent,
+    DeviceStatisticsComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -37,6 +52,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     WrappersModule,
     UserModule,
+    NgChartsModule,
   ],
 })
 export class DevicesModule {}

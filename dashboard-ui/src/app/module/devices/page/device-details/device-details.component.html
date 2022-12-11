@@ -32,24 +32,16 @@
       </div>
     </div>
 
-    <div class="row mt-4">
-      <div class="col">
-        <h4>Device Users</h4>
-      </div>
-    </div>
+    <app-device-statistics
+      class="mt-4 d-block"
+      [deviceCode]="device.code"
+    ></app-device-statistics>
 
-    <app-add-user
-      [deviceId]="device.code"
-      (addUser)="addEmail($event)"
-    ></app-add-user>
-
-    <ng-container *ngIf="emails.length > 0">
-      <div class="mt-3">
-        <app-user-list-by-emails
-          [emails]="emails"
-          (delete)="deleteUser(device, $event)"
-        ></app-user-list-by-emails>
-      </div>
+    <ng-container *ngIf="isAdmin()">
+      <app-device-users
+        class="mt-4 d-block"
+        [deviceCode]="device.code"
+      ></app-device-users>
     </ng-container>
   </ng-container>
 </div>

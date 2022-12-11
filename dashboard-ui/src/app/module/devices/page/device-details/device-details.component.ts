@@ -9,6 +9,7 @@ import {
   Subscription,
   switchMap,
 } from 'rxjs';
+import { AuthService } from 'src/app/module/auth/services/auth.service';
 import { Device } from '../../models/device.model';
 import { HardwareRepositoryService } from '../../services/hardware.repository.service';
 
@@ -17,59 +18,37 @@ import { HardwareRepositoryService } from '../../services/hardware.repository.se
   templateUrl: './device-details.component.html',
   styleUrls: ['./device-details.component.scss'],
 })
-export class DeviceDetailsComponent implements OnInit, OnDestroy {
+export class DeviceDetailsComponent implements OnInit {
+  deviceId$: Observable<number> | null = null;
   device$: Observable<Device> | null = null;
-  deviceUserEmails$: Subscription | null = null;
   deviceError$: Observable<any> | null = null;
-
-  emails: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private hardwareRepository: HardwareRepositoryService
+    private hardwareRepository: HardwareRepositoryService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.device$ = this.route.params.pipe(
-      switchMap((params) => {
+    this.deviceId$ = this.route.params.pipe(
+      map((params) => {
         const deviceId = params['deviceId'];
 
-        return this.hardwareRepository.getDeviceByCode(+deviceId);
+        return +deviceId;
+      })
+    );
+
+    this.device$ = this.deviceId$.pipe(
+      switchMap((deviceId) => {
+        return this.hardwareRepository.getDeviceByCode(deviceId);
       }),
       shareReplay(1)
     );
 
-    this.deviceUserEmails$ = this.route.params
-      .pipe(
-        switchMap((params) => {
-          const deviceId = params['deviceId'];
-
-          return this.hardwareRepository.getDeviceUsers(+deviceId);
-        }),
-        map((deviceUser) => deviceUser.map((user) => user.userEmail))
-      )
-      .subscribe((deviceEmails) => {
-        this.emails = deviceEmails;
-      });
-
     this.deviceError$ = this.device$.pipe(catchError((err) => of(err)));
   }
 
-  addEmail(email: string) {
-    this.emails = [...this.emails, email];
-  }
-
-  deleteUser(device: Device, userEmail: string): void {
-    this.hardwareRepository
-      .removeDeviceUser(device.code, userEmail)
-      .subscribe(() => {
-        this.emails = this.emails.filter((email) => email !== userEmail);
-      });
-  }
-
-  ngOnDestroy(): void {
-    if (this.deviceUserEmails$) {
-      this.deviceUserEmails$.unsubscribe();
-    }
+  isAdmin() {
+    return this.authService.isAdmin();
   }
 }
