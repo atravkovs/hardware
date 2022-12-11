@@ -1,12 +1,14 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
-import { Observable, Subject, switchMap } from 'rxjs';
+import { map, Observable, of, Subject, switchMap } from 'rxjs';
 import { User } from '../../models/user.model';
 import { UserRepositoryService } from '../../services/user.repository.service';
 
@@ -21,8 +23,12 @@ export class UserListByEmailsComponent
   @Input()
   emails: string[] = [];
 
+  @Output()
+  delete: EventEmitter<string> = new EventEmitter();
+
   email$: Subject<string[]>;
   users$: Observable<User[]> | null = null;
+  missingEmails$: Observable<string[]> | null = null;
 
   constructor(private userRepository: UserRepositoryService) {
     this.email$ = new Subject();
@@ -38,9 +44,23 @@ export class UserListByEmailsComponent
         return this.userRepository.getUsersByEmails(emails);
       })
     );
+
+    this.missingEmails$ = this.users$.pipe(
+      switchMap((users) => {
+        return of(
+          this.emails.filter(
+            (email) => !users.some((user) => user.email === email)
+          )
+        );
+      })
+    );
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
     this.email$.next(this.emails);
+  }
+
+  deleteUser(email: string): void {
+    this.delete.emit(email);
   }
 }

@@ -40,4 +40,10 @@ export class HardwareRepositoryService {
       newDeviceUser
     );
   }
+
+  removeDeviceUser(deviceCode: number, userEmail: string): Observable<unknown> {
+    return this.http.delete(
+      `/api/hardware/device/${deviceCode}/users/${userEmail}`
+    );
+  }
 }

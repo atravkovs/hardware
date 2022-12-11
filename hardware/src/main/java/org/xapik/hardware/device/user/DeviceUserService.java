@@ -1,6 +1,7 @@
 package org.xapik.hardware.device.user;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.xapik.hardware.device.main.model.DeviceEntity;
 import org.xapik.hardware.device.user.model.DeviceUserDTO;
 import org.xapik.hardware.device.user.model.DeviceUserEntity;
 import org.xapik.hardware.device.user.model.NewDeviceUserDTO;
+import org.xapik.hardware.device.user.model.UserDeviceDoesNotExistException;
 import org.xapik.hardware.device.user.model.UserDeviceExistsException;
 
 @Service
@@ -38,6 +40,24 @@ public class DeviceUserService {
     deviceUser.setDevice(device);
 
     return getDeviceUserDto(deviceUserRepository.save(deviceUser));
+  }
+
+  public void removeDeviceAssignee(long deviceCode, String userEmail) {
+    var deviceUser = getDeviceUser(deviceCode, userEmail);
+
+    deviceUserRepository.delete(deviceUser);
+  }
+
+  private DeviceUserEntity getDeviceUser(long deviceCode, String userEmail) {
+    DeviceEntity device = deviceService.getDevice(deviceCode);
+    var deviceUser = deviceUserRepository.getDeviceUserEntityByUserEmailAndDevice(userEmail,
+        device);
+
+    if (deviceUser.isEmpty()) {
+      throw new UserDeviceDoesNotExistException(deviceCode, userEmail);
+    }
+
+    return deviceUser.get();
   }
 
   private DeviceUserDTO getDeviceUserDto(DeviceUserEntity deviceUser) {

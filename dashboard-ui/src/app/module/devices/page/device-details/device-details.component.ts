@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { catchError, map, Observable, of, Subscription, switchMap } from 'rxjs';
+import { User } from 'src/app/module/shared/user/models/user.model';
 import { Device } from '../../models/device.model';
 import { HardwareRepositoryService } from '../../services/hardware.repository.service';
 
@@ -48,6 +49,14 @@ export class DeviceDetailsComponent implements OnInit, OnDestroy {
 
   addEmail(email: string) {
     this.emails = [...this.emails, email];
+  }
+
+  deleteUser(device: Device, userEmail: string): void {
+    this.hardwareRepository
+      .removeDeviceUser(device.code, userEmail)
+      .subscribe(() => {
+        this.emails = this.emails.filter((email) => email !== userEmail);
+      });
   }
 
   ngOnDestroy(): void {

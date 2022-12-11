@@ -42,11 +42,14 @@
       [deviceId]="device.code"
       (addUser)="addEmail($event)"
     ></app-add-user>
-  </ng-container>
 
-  <ng-container *ngIf="emails.length > 0">
-    <div class="mt-3">
-      <app-user-list-by-emails [emails]="emails"></app-user-list-by-emails>
-    </div>
+    <ng-container *ngIf="emails.length > 0">
+      <div class="mt-3">
+        <app-user-list-by-emails
+          [emails]="emails"
+          (delete)="deleteUser(device, $event)"
+        ></app-user-list-by-emails>
+      </div>
+    </ng-container>
   </ng-container>
 </div>

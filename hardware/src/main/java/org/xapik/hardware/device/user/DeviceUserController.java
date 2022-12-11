@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,18 +24,23 @@ public class DeviceUserController {
 
   @GetMapping("")
   public ResponseEntity<List<DeviceUserDTO>> getAssignedDevices(
-      @PathVariable("deviceCode") Integer deviceCode
-  ) {
+      @PathVariable("deviceCode") Integer deviceCode) {
     return ResponseEntity.ok(this.deviceUserService.getAssignedDevices(deviceCode));
   }
 
   @PostMapping("")
-  public ResponseEntity<DeviceUserDTO> assignDevice(
-      @PathVariable("deviceCode") Integer deviceCode,
-      @Valid @RequestBody NewDeviceUserDTO deviceUserDTO
-  ) {
+  public ResponseEntity<DeviceUserDTO> assignDevice(@PathVariable("deviceCode") Integer deviceCode,
+      @Valid @RequestBody NewDeviceUserDTO deviceUserDTO) {
     return ResponseEntity.ok(
         this.deviceUserService.assignDevice(deviceCode.longValue(), deviceUserDTO));
+  }
+
+  @DeleteMapping("/{userEmail}")
+  public ResponseEntity<?> deleteUser(@PathVariable("deviceCode") Integer deviceCode,
+      @PathVariable("userEmail") String userEmail) {
+    this.deviceUserService.removeDeviceAssignee(deviceCode, userEmail);
+
+    return ResponseEntity.ok().build();
   }
 
 }
