@@ -14,6 +14,7 @@ import org.xapik.hardware.device.main.model.DeviceDTO;
 import org.xapik.hardware.device.main.model.NewDeviceDTO;
 
 import javax.validation.Valid;
+import org.xapik.hardware.device.user.DeviceUserService;
 
 @RestController
 @RequestMapping("/device")

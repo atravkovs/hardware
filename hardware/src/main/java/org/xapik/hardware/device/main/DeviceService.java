@@ -38,7 +38,9 @@ public class DeviceService {
   }
 
   public List<DeviceDTO> getUserDevices(String userEmail) {
-    return List.of();
+    var deviceEntities = deviceRepository.findUserDevices(userEmail);
+
+    return deviceEntities.stream().map(this::getDeviceDto).toList();
   }
 
   public DeviceDTO createDevice(NewDeviceDTO newDeviceDTO) {
