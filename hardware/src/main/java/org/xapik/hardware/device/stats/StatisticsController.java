@@ -23,17 +23,17 @@ public class StatisticsController {
   @GetMapping("/memory")
   public ResponseEntity<List<MemoryPoint>> getMemoryStatistics(
       @PathVariable("deviceCode") Integer deviceCode, @RequestParam String from,
-      @RequestParam String to, @RequestParam String measurement, @RequestParam String field) {
+      @RequestParam String to, @RequestParam String field) {
     return ResponseEntity.ok(statisticsService.getStatistics(
-        new QueryConfiguration(deviceCode, from, to, measurement, field), MemoryPoint.class));
+        new QueryConfiguration(deviceCode, "memory", field, from, to), MemoryPoint.class));
   }
 
   @GetMapping("/cpu")
   public ResponseEntity<List<CpuPoint>> getCpuStatistics(
       @PathVariable("deviceCode") Integer deviceCode, @RequestParam String from,
-      @RequestParam String to, @RequestParam String measurement, @RequestParam String field) {
+      @RequestParam String to, @RequestParam String field) {
     return ResponseEntity.ok(statisticsService.getStatistics(
-        new QueryConfiguration(deviceCode, from, to, measurement, field), CpuPoint.class));
+        new QueryConfiguration(deviceCode, "cpu", field, from, to), CpuPoint.class));
   }
 
 }

@@ -22,8 +22,8 @@ public class StatisticsService {
               |> filter(fn: (r) => r["_measurement"] == "%s")
               |> filter(fn: (r) => r["_field"] == "%s")
               |> yield(name: "mean")
-              """, query.deviceCode(), query.measurement(), query.field(), query.fromIsoDate(),
-        query.toIsoDate());
+              """, query.deviceCode(), query.fromIsoDate(), query.toIsoDate(), query.measurement(),
+        query.field());
 
     QueryApi queryApi = influxDBClient.getQueryApi();
 
