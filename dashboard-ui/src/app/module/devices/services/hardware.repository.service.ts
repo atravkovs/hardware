@@ -51,13 +51,17 @@ export class HardwareRepositoryService {
   getStatistics(
     deviceCode: number,
     from: Date,
-    to: Date
+    to: Date,
+    measurement: string,
+    field: string
   ): Observable<DataPoint[]> {
     return this.http
-      .get<DataPointDTO[]>(`/api/hardware/device/${deviceCode}/statistics`, {
+      .get<DataPointDTO[]>(`/api/hardware/device/${deviceCode}/statistics/${measurement}`, {
         params: {
           from: from.toISOString(),
           to: to.toISOString(),
+          measurement,
+          field,
         },
       })
       .pipe(

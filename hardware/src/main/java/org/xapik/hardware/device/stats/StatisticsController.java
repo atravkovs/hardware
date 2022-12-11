@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.xapik.hardware.device.stats.model.CpuPoint;
 import org.xapik.hardware.device.stats.model.MemoryPoint;
+import org.xapik.hardware.device.stats.model.QueryConfiguration;
 
 @RestController
 @RequestMapping("/device/{deviceCode}/statistics")
@@ -18,13 +20,20 @@ public class StatisticsController {
 
   private final StatisticsService statisticsService;
 
-  @GetMapping("")
-  public ResponseEntity<List<MemoryPoint>> getStatistics(
-      @PathVariable("deviceCode") Integer deviceCode,
-      @RequestParam String from,
-      @RequestParam String to
-      ) {
-    return ResponseEntity.ok(statisticsService.getStatistics(deviceCode, from, to));
+  @GetMapping("/memory")
+  public ResponseEntity<List<MemoryPoint>> getMemoryStatistics(
+      @PathVariable("deviceCode") Integer deviceCode, @RequestParam String from,
+      @RequestParam String to, @RequestParam String measurement, @RequestParam String field) {
+    return ResponseEntity.ok(statisticsService.getStatistics(
+        new QueryConfiguration(deviceCode, from, to, measurement, field), MemoryPoint.class));
+  }
+
+  @GetMapping("/cpu")
+  public ResponseEntity<List<CpuPoint>> getCpuStatistics(
+      @PathVariable("deviceCode") Integer deviceCode, @RequestParam String from,
+      @RequestParam String to, @RequestParam String measurement, @RequestParam String field) {
+    return ResponseEntity.ok(statisticsService.getStatistics(
+        new QueryConfiguration(deviceCode, from, to, measurement, field), CpuPoint.class));
   }
 
 }

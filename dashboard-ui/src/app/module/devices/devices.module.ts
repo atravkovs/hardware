@@ -13,6 +13,8 @@ import { UserRole } from '../auth/models/user-role.enum';
 import { AuthGuard } from '../auth/guard/auth.guard';
 import { DeviceStatisticsComponent } from './page/device-details/device-statistics/device-statistics.component';
 import { DeviceUsersComponent } from './page/device-details/device-users/device-users.component';
+import { MemoryGraphComponent } from './page/device-details/device-statistics/memory-graph/memory-graph.component';
+import { CpuGraphComponent } from './page/device-details/device-statistics/cpu-graph/cpu-graph.component';
 
 const routes: Routes = [
   {
@@ -45,6 +47,8 @@ const routes: Routes = [
     AddUserComponent,
     DeviceUsersComponent,
     DeviceStatisticsComponent,
+    MemoryGraphComponent,
+    CpuGraphComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
