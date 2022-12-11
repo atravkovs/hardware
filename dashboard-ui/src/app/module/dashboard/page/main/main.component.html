@@ -1,1 +1,7 @@
-<p>{{ "Test" | translate }} main works!</p>
+<div class="container pt-5">
+  <div class="row" *ngIf="user$ | async; let user">
+    <div class="col">
+      <h3>Hello, {{ user.name }} {{ user.surname }}!</h3>
+    </div>
+  </div>
+</div>

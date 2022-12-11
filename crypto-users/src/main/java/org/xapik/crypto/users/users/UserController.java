@@ -1,11 +1,13 @@
 package org.xapik.crypto.users.users;
 
+import java.security.Principal;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,12 +32,13 @@ public class UserController {
     this.userService = userService;
   }
 
-  @GetMapping("/hello")
-  public String hello() {
-    return "Hello 123";
+  @GetMapping("/user")
+  public UserEntity getCurrentUser(Principal principal) {
+    return this.userService.getUser(principal.getName());
   }
 
   @GetMapping("/users")
+  @PreAuthorize("hasAuthority('admin')")
   public Page<UserEntity> getUsers(@RequestParam(defaultValue = "0") Integer page,
       @RequestParam(defaultValue = "5") Integer pageSize) {
     return this.userService.getUsers(page, pageSize);
@@ -51,12 +54,13 @@ public class UserController {
     try {
       return ResponseEntity.ok(userService.save(user));
     } catch (UserAlreadyExistsException e) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN)
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
           .body(new GenericError(e.getLocalizedMessage()));
     }
   }
 
   @DeleteMapping("/user/{email}")
+  @PreAuthorize("hasAuthority('admin') or #email == authentication.principal.username")
   public ResponseEntity<?> deleteUser(@PathVariable String email) {
     userService.deleteUser(email);
 
