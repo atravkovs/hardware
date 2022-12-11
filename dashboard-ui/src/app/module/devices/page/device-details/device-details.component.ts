@@ -1,6 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, map, Observable, of, Subscription, switchMap } from 'rxjs';
+import {
+  catchError,
+  map,
+  Observable,
+  of,
+  shareReplay,
+  Subscription,
+  switchMap,
+} from 'rxjs';
 import { Device } from '../../models/device.model';
 import { HardwareRepositoryService } from '../../services/hardware.repository.service';
 
@@ -27,7 +35,8 @@ export class DeviceDetailsComponent implements OnInit, OnDestroy {
         const deviceId = params['deviceId'];
 
         return this.hardwareRepository.getDeviceByCode(+deviceId);
-      })
+      }),
+      shareReplay(1)
     );
 
     this.deviceUserEmails$ = this.route.params

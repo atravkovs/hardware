@@ -8,7 +8,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { map, Observable, of, Subject, switchMap } from 'rxjs';
+import { map, Observable, of, shareReplay, Subject, switchMap } from 'rxjs';
 import { User } from '../../models/user.model';
 import { UserRepositoryService } from '../../services/user.repository.service';
 
@@ -42,15 +42,14 @@ export class UserListByEmailsComponent
     this.users$ = this.email$.pipe(
       switchMap((emails) => {
         return this.userRepository.getUsersByEmails(emails);
-      })
+      }),
+      shareReplay(1)
     );
 
     this.missingEmails$ = this.users$.pipe(
-      switchMap((users) => {
-        return of(
-          this.emails.filter(
-            (email) => !users.some((user) => user.email === email)
-          )
+      map((users) => {
+        return this.emails.filter(
+          (email) => !users.some((user) => user.email === email)
         );
       })
     );
