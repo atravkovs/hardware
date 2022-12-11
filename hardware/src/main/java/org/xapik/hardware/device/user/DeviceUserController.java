@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class DeviceUserController {
   }
 
   @PostMapping("")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<DeviceUserDTO> assignDevice(@PathVariable("deviceCode") Integer deviceCode,
       @Valid @RequestBody NewDeviceUserDTO deviceUserDTO) {
     return ResponseEntity.ok(
@@ -36,6 +38,7 @@ public class DeviceUserController {
   }
 
   @DeleteMapping("/{userEmail}")
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<?> deleteUser(@PathVariable("deviceCode") Integer deviceCode,
       @PathVariable("userEmail") String userEmail) {
     this.deviceUserService.removeDeviceAssignee(deviceCode, userEmail);

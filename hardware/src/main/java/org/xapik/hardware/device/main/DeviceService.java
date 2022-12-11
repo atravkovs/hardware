@@ -37,6 +37,10 @@ public class DeviceService {
     return devices.map(this::getDeviceDto);
   }
 
+  public List<DeviceDTO> getUserDevices(String userEmail) {
+    return List.of();
+  }
+
   public DeviceDTO createDevice(NewDeviceDTO newDeviceDTO) {
     DeviceEntity deviceEntity = new DeviceEntity();
     deviceEntity.setName(newDeviceDTO.getName());

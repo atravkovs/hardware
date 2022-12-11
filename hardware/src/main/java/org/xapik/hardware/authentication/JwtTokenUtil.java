@@ -7,12 +7,16 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -29,11 +33,30 @@ public class JwtTokenUtil implements Serializable {
   private String secret;
 
   public UserDetails getUserDetailsFromToken(String token) {
-    return new User(this.getUsernameFromToken(token), "", new ArrayList<>());
+    return new User(getUsernameFromToken(token), "", getAuthoritiesFromToken(token));
   }
 
   public String getUsernameFromToken(String token) {
     return getClaimFromToken(token, Claims::getSubject);
+  }
+
+  public List<GrantedAuthority> getAuthoritiesFromToken(String token) {
+    var roles = getRolesFromToken(token);
+
+    var authorities = new ArrayList<GrantedAuthority>();
+    roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
+
+    return authorities;
+  }
+
+  public List<String> getRolesFromToken(String token) {
+    var claimsObject = getClaimFromToken(token, claims -> claims.get("roles", Object.class));
+
+    if (claimsObject instanceof Collection) {
+      return new ArrayList<>((Collection<String>) claimsObject);
+    }
+
+    throw new RuntimeException("Roles are not collection");
   }
 
   public Date getIssuedAtDateFromToken(String token) {

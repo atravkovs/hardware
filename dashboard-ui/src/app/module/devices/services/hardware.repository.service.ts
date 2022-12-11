@@ -18,7 +18,7 @@ export class HardwareRepositoryService {
   }
 
   getDevices(): Observable<Page<Device>> {
-    return this.http.get<Page<Device>>('/api/hardware/device');
+    return this.http.get<Page<Device>>('/api/hardware/device/list');
   }
 
   createDevice(device: NewDevice): Observable<Device> {
