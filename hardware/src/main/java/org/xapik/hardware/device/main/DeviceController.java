@@ -29,8 +29,9 @@ public class DeviceController {
   @GetMapping("/list")
   @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<Page<DeviceDTO>> getDevices(@RequestParam(defaultValue = "0") Integer page,
-      @RequestParam(defaultValue = "5") Integer pageSize) {
-    return ResponseEntity.ok(this.deviceService.getDevices(page, pageSize));
+      @RequestParam(defaultValue = "5") Integer pageSize,
+      @RequestParam(required = false) String search) {
+    return ResponseEntity.ok(this.deviceService.getDevices(page, pageSize, search));
   }
 
 
@@ -41,7 +42,8 @@ public class DeviceController {
 
   @PostMapping("")
   @PreAuthorize("hasAuthority('admin')")
-  public ResponseEntity<NewDeviceResponse> createDevice(@Valid @RequestBody NewDeviceDTO newDeviceDTO) {
+  public ResponseEntity<NewDeviceResponse> createDevice(
+      @Valid @RequestBody NewDeviceDTO newDeviceDTO) {
     return ResponseEntity.ok(this.deviceService.initialiseDevice(newDeviceDTO));
   }
 

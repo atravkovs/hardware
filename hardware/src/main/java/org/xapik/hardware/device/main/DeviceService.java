@@ -35,10 +35,10 @@ public class DeviceService {
     return deviceDTO;
   }
 
-  public Page<DeviceDTO> getDevices(int pageNumber, int pageSize) {
+  public Page<DeviceDTO> getDevices(int pageNumber, int pageSize, String query) {
     var pageable = Pageable.ofSize(pageSize).withPage(pageNumber);
 
-    var devices = this.deviceRepository.findAll(pageable);
+    var devices = this.deviceRepository.findAllByNameIsLike(pageable, "%" + query + "%");
 
     return devices.map(this::getDeviceDto);
   }
@@ -59,7 +59,7 @@ public class DeviceService {
   public NewDeviceResponse initialiseDevice(NewDeviceDTO newDeviceDTO) {
     var newDevice = this.createDevice(newDeviceDTO);
     this.statisticsService.createBucket("d" + newDevice.getCode());
-    String token =this.statisticsService.generateToken("d2");
+    String token = this.statisticsService.generateToken("d2");
 
     NewDeviceResponse newDeviceResponse = new NewDeviceResponse();
     newDeviceResponse.setDevice(newDevice);

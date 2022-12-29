@@ -14,7 +14,7 @@ export class UserRepositoryService {
     return this.http.delete(`/api/users/user/${email}`);
   }
 
-  getUsers(query: { search?: string }): Observable<Page<User>> {
+  getUsers(query: { search?: string; page?: number; }): Observable<Page<User>> {
     return this.http.get<Page<User>>('/api/users/users', {
       params: query,
     });
