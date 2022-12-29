@@ -2,7 +2,7 @@ import "@testing-library/cypress/add-commands";
 
 Cypress.Commands.add("loginWith", ({ email, password }) =>
   cy
-    .visit("/login")
+    .visit("/")
     .findByLabelText("Email address")
     .type(email)
     .findByLabelText("Password")

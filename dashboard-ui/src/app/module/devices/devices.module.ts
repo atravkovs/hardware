@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeviceDetailsComponent } from './page/device-details/device-details.component';
 import { AddUserComponent } from './page/device-details/add-user/add-user.component';
 import { UserModule } from '../shared/user/user.module';
-import { UserRole } from '../auth/models/user-role.enum';
+import { UserRole } from '../shared/authentication/models/user-role.enum';
 import { AuthGuard } from '../auth/guard/auth.guard';
 import { DeviceStatisticsComponent } from './page/device-details/device-statistics/device-statistics.component';
 import { DeviceUsersComponent } from './page/device-details/device-users/device-users.component';

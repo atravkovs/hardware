@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { AuthModule } from './module/auth/auth.module';
 import { AuthInterceptor } from './module/auth/interceptors/auth.interceptor';
+import { Error404Component } from './layout/error404/error404.component';
 
 const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -24,7 +25,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent],
+  declarations: [AppComponent, HeaderComponent, Error404Component],
   imports: [
     BrowserModule,
     AppRoutingModule,

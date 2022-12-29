@@ -1,0 +1,49 @@
+Document Todos:
+
+ - ✅ IAUS7 description
+ - ✅ Rewrite architecture
+ - DB Logical model
+ - DB Physical model
+ - Update DB ER model
+ - Estimations description
+ - Conclusion
+ - Formatting
+  - ⏰ Tables nr.
+  - ⏰ Images nr.
+  - ⏰ Fonts
+  - ⏰ Headings
+  - Vocabulary
+ 
+
+ - ✅ IAUS1
+  - Solution description 
+  - UI description 
+  - Manual Testing results 
+ - ✅ IAUS2
+  - Solution description 
+  - UI description 
+  - Manual Testing results
+ - ✅ IAUS3
+  - Solution description 
+  - UI description 
+  - Manual Testing results
+ - ✅ IAUS4
+  - Solution description 
+  - UI description 
+  - Manual Testing results
+ - ✅ IAUS5
+  - Solution description 
+  - UI description 
+  - Manual Testing results
+ - ✅ IAUS6
+  - Solution description 
+  - UI description 
+  - Manual Testing results
+ - IAUS7
+  - Solution description 
+  - ✅ UI description 
+  - Manual Testing results
+ - ✅ IAUS9
+  - Solution description 
+  - ✅ UI description 
+  - Manual Testing results

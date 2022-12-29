@@ -4,10 +4,8 @@ import { LoginComponent } from './page/login/login.component';
 import { AuthCardComponent } from './component/auth-card/auth-card.component';
 import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './page/register/register.component';
-import { AuthenticationRepository } from './services/authentication.repository';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TokenService } from './services/token.service';
-import { AuthService } from './services/auth.service';
+import { AuthenticationModule } from '../shared/authentication/authentication.module';
 
 const routes: Routes = [
   {
@@ -22,7 +20,11 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [LoginComponent, AuthCardComponent, RegisterComponent],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule.forChild(routes)],
-  providers: [AuthenticationRepository, TokenService, AuthService],
+  imports: [
+    CommonModule,
+    AuthenticationModule,
+    ReactiveFormsModule,
+    RouterModule.forChild(routes),
+  ],
 })
 export class AuthModule {}

@@ -2,9 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs';
-import { ErrorModel } from '../../models/error.model';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../shared/authentication/services/auth.service';
 
 @Component({
   selector: 'app-register',

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import org.springframework.util.StringUtils;
 import org.xapik.crypto.users.users.model.UserAlreadyExistsException;
 import org.xapik.crypto.users.users.model.UserRegistrationRequest;
 import org.xapik.crypto.users.users.model.UserEntity;
+import org.xapik.crypto.users.users.model.UserRoleRequest;
+import org.xapik.crypto.users.users.model.UserUpdateRequest;
 
 @Slf4j
 @Service
@@ -45,6 +48,21 @@ public class UserService {
 
   public UserEntity getUser(String email) {
     return userRepository.findUserEntityByEmail(email);
+  }
+
+  public UserEntity updateUser(UserUpdateRequest user, String email) {
+    UserEntity userEntity = this.getUser(email);
+    userEntity.setName(user.getName());
+    userEntity.setSurname(user.getSurname());
+
+    return userRepository.save(userEntity);
+  }
+
+  public UserEntity updateUserRole(UserRoleRequest role, String email) {
+    UserEntity userEntity = this.getUser(email);
+    userEntity.setRole(role.getRole());
+
+    return userRepository.save(userEntity);
   }
 
   private String processName(String string) {
