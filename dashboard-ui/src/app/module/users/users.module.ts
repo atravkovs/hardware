@@ -4,6 +4,7 @@ import { UserListComponent } from './page/user-list/user-list.component';
 import { RouterModule, Routes } from '@angular/router';
 import { WrappersModule } from '../shared/wrappers/wrappers.module';
 import { UserModule } from '../shared/user/user.module';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     UserModule,
+    FormsModule,
     RouterModule.forChild(routes),
     WrappersModule,
   ],

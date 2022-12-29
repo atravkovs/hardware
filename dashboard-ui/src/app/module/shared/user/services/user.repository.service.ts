@@ -14,8 +14,10 @@ export class UserRepositoryService {
     return this.http.delete(`/api/users/user/${email}`);
   }
 
-  getUsers(): Observable<Page<User>> {
-    return this.http.get<Page<User>>('/api/users/users');
+  getUsers(query: { search?: string }): Observable<Page<User>> {
+    return this.http.get<Page<User>>('/api/users/users', {
+      params: query,
+    });
   }
 
   getUsersByEmails(emails: string[]): Observable<User[]> {

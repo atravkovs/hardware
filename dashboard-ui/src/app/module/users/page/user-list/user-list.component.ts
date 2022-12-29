@@ -10,6 +10,11 @@ import { UserRepositoryService } from '../../../shared/user/services/user.reposi
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit, AfterViewInit {
+  query = {
+    search: '',
+    page: 0,
+  };
+
   refresh$: Subject<string> = new Subject();
   users$: Observable<Page<User>> | null = null;
 
@@ -18,7 +23,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.users$ = this.refresh$.pipe(
       switchMap(() => {
-        return this.userRepository.getUsers();
+        return this.userRepository.getUsers(this.query);
       })
     );
   }
@@ -27,9 +32,25 @@ export class UserListComponent implements OnInit, AfterViewInit {
     this.refresh$.next('');
   }
 
+  onSearch(): void {
+    this.query.page = 0;
+    this.refresh$.next('');
+  }
+
+  updatePage(page: number): void {
+    if (this.query.page !== page) {
+      this.query.page = page;
+      this.refresh$.next('');
+    }
+  }
+
   deleteUser(user: User) {
     this.userRepository.deleteUser(user.email).subscribe(() => {
       this.refresh$.next('');
     });
+  }
+
+  numSequence(n: number): Array<number> {
+    return Array(n);
   }
 }

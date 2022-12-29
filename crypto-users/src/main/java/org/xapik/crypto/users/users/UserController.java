@@ -40,8 +40,9 @@ public class UserController {
   @GetMapping("/users")
   @PreAuthorize("hasAuthority('admin')")
   public Page<UserEntity> getUsers(@RequestParam(defaultValue = "0") Integer page,
-      @RequestParam(defaultValue = "5") Integer pageSize) {
-    return this.userService.getUsers(page, pageSize);
+      @RequestParam(defaultValue = "5") Integer pageSize,
+      @RequestParam(required = false) String search) {
+    return this.userService.getUsers(page, pageSize, search);
   }
 
   @GetMapping("/users/emails")

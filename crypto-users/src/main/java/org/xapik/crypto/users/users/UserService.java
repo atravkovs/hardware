@@ -1,9 +1,6 @@
 package org.xapik.crypto.users.users;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.xapik.crypto.users.users.model.UserAlreadyExistsException;
 import org.xapik.crypto.users.users.model.UserRegistrationRequest;
 import org.xapik.crypto.users.users.model.UserEntity;
@@ -30,12 +26,17 @@ public class UserService {
     this.passwordEncoder = passwordEncoder;
   }
 
-  public Page<UserEntity> getUsers(int pageNumber, int pageSize) {
-    var pageable = Pageable
-        .ofSize(pageSize)
-        .withPage(pageNumber);
+  public Page<UserEntity> getUsers(int pageNumber, int pageSize, String searchQuery) {
+    var pageable = Pageable.ofSize(pageSize).withPage(pageNumber);
 
-    return this.userRepository.findAll(pageable);
+    if (searchQuery == null) {
+      return this.userRepository.findAll(pageable);
+    }
+
+    searchQuery = "%" + searchQuery + "%";
+
+    return this.userRepository.findAllByNameIsLikeOrSurnameIsLikeOrEmailIsLike(pageable,
+        searchQuery, searchQuery, searchQuery);
   }
 
   public List<UserEntity> getUsersByEmails(List<String> emails) {
@@ -57,6 +58,12 @@ public class UserService {
       throw new UserAlreadyExistsException();
     }
 
+    UserEntity newUser = this.buildUserEntity(user);
+
+    return userRepository.save(newUser);
+  }
+
+  private UserEntity buildUserEntity(UserRegistrationRequest user) {
     UserEntity newUser = new UserEntity();
     newUser.setName(processName(user.getName()));
     newUser.setEmail(user.getEmail());
@@ -64,7 +71,7 @@ public class UserService {
     newUser.setPassword(passwordEncoder.encode(user.getPassword()));
     newUser.setRole("user");
 
-    return userRepository.save(newUser);
+    return newUser;
   }
 
   public void deleteUser(String email) {
