@@ -7,7 +7,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { TokenService } from '../services/token.service';
+import { TokenService } from '../../shared/authentication/services/token.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +32,15 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    this.router.navigate(['/login', { queryParams: { returnUrl: state.url } }]);
+    if (!this.tokenService.isLoggedIn()) {
+      this.router.navigate([
+        '/login',
+        { queryParams: { returnUrl: state.url } },
+      ]);
+    } else {
+      this.router.navigate(['/']);
+    }
+
     return false;
   }
 }
