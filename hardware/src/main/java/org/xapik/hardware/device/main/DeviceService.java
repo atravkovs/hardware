@@ -8,23 +8,29 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.xapik.hardware.device.main.model.DeviceDTO;
 import org.xapik.hardware.device.main.model.DeviceEntity;
-import org.xapik.hardware.device.main.DeviceRepository;
 import org.xapik.hardware.device.main.model.DeviceNotFoundException;
 import org.xapik.hardware.device.main.model.NewDeviceDTO;
-import org.xapik.hardware.device.user.model.DeviceUserDTO;
-import org.xapik.hardware.device.user.model.DeviceUserEntity;
+import org.xapik.hardware.device.main.model.NewDeviceResponse;
+import org.xapik.hardware.device.stats.StatisticsService;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DeviceService {
 
   private final DeviceRepository deviceRepository;
+  private final StatisticsService statisticsService;
 
   private DeviceDTO getDeviceDto(DeviceEntity deviceEntity) {
     DeviceDTO deviceDTO = new DeviceDTO();
     deviceDTO.setCode(deviceEntity.getCode());
     deviceDTO.setName(deviceEntity.getName());
-    deviceDTO.setUserCount(deviceEntity.getDeviceUsers().size());
+
+    var deviceUsers = deviceEntity.getDeviceUsers();
+    if (deviceUsers == null) {
+      deviceDTO.setUserCount(0);
+    } else {
+      deviceDTO.setUserCount(deviceUsers.size());
+    }
 
     return deviceDTO;
   }
@@ -48,6 +54,18 @@ public class DeviceService {
     deviceEntity.setName(newDeviceDTO.getName());
 
     return getDeviceDto(deviceRepository.save(deviceEntity));
+  }
+
+  public NewDeviceResponse initialiseDevice(NewDeviceDTO newDeviceDTO) {
+    var newDevice = this.createDevice(newDeviceDTO);
+    this.statisticsService.createBucket("d" + newDevice.getCode());
+    String token =this.statisticsService.generateToken("d2");
+
+    NewDeviceResponse newDeviceResponse = new NewDeviceResponse();
+    newDeviceResponse.setDevice(newDevice);
+    newDeviceResponse.setToken(token);
+
+    return newDeviceResponse;
   }
 
   public DeviceEntity getDevice(long deviceCode) {

@@ -1,7 +1,7 @@
 create table if not exists `device_user`
 (
     `id`   bigint auto_increment primary key,
-    `device_code` bigint,
+    `device_code` bigint not null,
     `user_email`  varchar(255) not null,
     FOREIGN KEY (`device_code`) REFERENCES device (`code`)
 ) engine = InnoDB

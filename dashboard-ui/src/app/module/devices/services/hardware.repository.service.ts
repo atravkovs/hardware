@@ -7,6 +7,7 @@ import { Device } from '../models/device.model';
 import { NewDeviceUser } from '../models/new-device-user.model';
 import { DeviceUser } from '../models/device-user.model';
 import { DataPoint, DataPointDTO } from '../models/data-point.model';
+import { NewDeviceResponse } from '../models/new-device-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,8 +23,8 @@ export class HardwareRepositoryService {
     return this.http.get<Page<Device>>('/api/hardware/device/list');
   }
 
-  createDevice(device: NewDevice): Observable<Device> {
-    return this.http.post<Device>(`/api/hardware/device`, device);
+  createDevice(device: NewDevice): Observable<NewDeviceResponse> {
+    return this.http.post<NewDeviceResponse>(`/api/hardware/device`, device);
   }
 
   getDeviceUsers(deviceCode: number): Observable<DeviceUser[]> {
@@ -56,14 +57,17 @@ export class HardwareRepositoryService {
     field: string
   ): Observable<DataPoint[]> {
     return this.http
-      .get<DataPointDTO[]>(`/api/hardware/device/${deviceCode}/statistics/${measurement}`, {
-        params: {
-          from: from.toISOString(),
-          to: to.toISOString(),
-          measurement,
-          field,
-        },
-      })
+      .get<DataPointDTO[]>(
+        `/api/hardware/device/${deviceCode}/statistics/${measurement}`,
+        {
+          params: {
+            from: from.toISOString(),
+            to: to.toISOString(),
+            measurement,
+            field,
+          },
+        }
+      )
       .pipe(
         map((dataPoints) =>
           dataPoints.map(({ time, value }) => ({ time: new Date(time), value }))

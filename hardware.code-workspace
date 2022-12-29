@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "stats-client"
+		},
+		{
+			"path": "dashboard-ui"
+		},
+		{
+			"path": "e2e"
+		}
+	],
+	"settings": {}
+}

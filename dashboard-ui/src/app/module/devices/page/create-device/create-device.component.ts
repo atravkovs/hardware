@@ -4,6 +4,7 @@ import { NewDevice } from './../../models/new-device.model';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NewDeviceResponse } from '../../models/new-device-response.model';
 
 @Component({
   selector: 'app-create-device',
@@ -17,9 +18,10 @@ export class CreateDeviceComponent implements OnInit {
 
   errorMessage: string | null = null;
 
+  newDeviceResponse: NewDeviceResponse | null = null;
+
   constructor(
-    private hardwareRepository: HardwareRepositoryService,
-    public router: Router
+    private hardwareRepository: HardwareRepositoryService
   ) {}
 
   ngOnInit(): void {}
@@ -35,8 +37,9 @@ export class CreateDeviceComponent implements OnInit {
       };
 
       this.hardwareRepository.createDevice(newDevice).subscribe({
-        next: () => {
-          this.router.navigate(['/devices']);
+        next: (response) => {
+          this.newDeviceResponse = response;
+          this.createDeviceForm.reset();
         },
         error: ({ error }: HttpErrorResponse) => {
           this.errorMessage = error.message;

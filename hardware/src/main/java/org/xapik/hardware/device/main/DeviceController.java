@@ -14,6 +14,8 @@ import org.xapik.hardware.device.main.model.DeviceDTO;
 import org.xapik.hardware.device.main.model.NewDeviceDTO;
 
 import javax.validation.Valid;
+import org.xapik.hardware.device.main.model.NewDeviceResponse;
+import org.xapik.hardware.device.stats.StatisticsService;
 import org.xapik.hardware.device.user.DeviceUserService;
 
 @RestController
@@ -22,6 +24,7 @@ import org.xapik.hardware.device.user.DeviceUserService;
 public class DeviceController {
 
   private final DeviceService deviceService;
+  private final StatisticsService statisticsService;
 
   @GetMapping("/list")
   @PreAuthorize("hasAuthority('admin')")
@@ -38,8 +41,8 @@ public class DeviceController {
 
   @PostMapping("")
   @PreAuthorize("hasAuthority('admin')")
-  public ResponseEntity<DeviceDTO> createDevice(@Valid @RequestBody NewDeviceDTO newDeviceDTO) {
-    return ResponseEntity.ok(this.deviceService.createDevice(newDeviceDTO));
+  public ResponseEntity<NewDeviceResponse> createDevice(@Valid @RequestBody NewDeviceDTO newDeviceDTO) {
+    return ResponseEntity.ok(this.deviceService.initialiseDevice(newDeviceDTO));
   }
 
   @GetMapping("/{deviceCode}")

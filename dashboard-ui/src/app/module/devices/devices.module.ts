@@ -18,20 +18,20 @@ import { CpuGraphComponent } from './page/device-details/device-statistics/cpu-g
 
 const routes: Routes = [
   {
-    path: ':deviceId',
-    component: DeviceDetailsComponent,
-  },
-  {
-    path: '',
-    component: DeviceListComponent,
+    path: 'create',
+    component: CreateDeviceComponent,
     canActivate: [AuthGuard],
     data: {
       roles: [UserRole.Admin],
     },
   },
   {
-    path: 'create',
-    component: CreateDeviceComponent,
+    path: ':deviceId',
+    component: DeviceDetailsComponent,
+  },
+  {
+    path: '',
+    component: DeviceListComponent,
     canActivate: [AuthGuard],
     data: {
       roles: [UserRole.Admin],
