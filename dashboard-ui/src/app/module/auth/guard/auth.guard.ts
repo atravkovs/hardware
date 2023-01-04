@@ -24,6 +24,7 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     const user = this.tokenService.getUser();
+
     if (
       this.tokenService.isLoggedIn() &&
       route.data['roles'] &&
