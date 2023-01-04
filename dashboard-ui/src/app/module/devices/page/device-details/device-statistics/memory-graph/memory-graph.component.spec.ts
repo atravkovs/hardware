@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MemoryGraphComponent } from './memory-graph.component';
@@ -8,9 +9,9 @@ describe('MemoryGraphComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MemoryGraphComponent ]
-    })
-    .compileComponents();
+      declarations: [MemoryGraphComponent],
+      imports: [HttpClientTestingModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MemoryGraphComponent);
     component = fixture.componentInstance;

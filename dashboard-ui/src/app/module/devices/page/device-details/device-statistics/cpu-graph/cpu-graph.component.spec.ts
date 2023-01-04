@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CpuGraphComponent } from './cpu-graph.component';
@@ -8,9 +9,9 @@ describe('CpuGraphComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CpuGraphComponent ]
-    })
-    .compileComponents();
+      declarations: [CpuGraphComponent],
+      imports: [HttpClientTestingModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CpuGraphComponent);
     component = fixture.componentInstance;
