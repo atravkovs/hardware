@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class FluxRange implements RangeEntry {
+public class FluxRange implements IRangeEntry {
 
   private String from;
   private String to;

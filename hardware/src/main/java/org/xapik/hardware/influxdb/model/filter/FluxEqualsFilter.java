@@ -3,7 +3,7 @@ package org.xapik.hardware.influxdb.model.filter;
 import lombok.Data;
 
 @Data
-public class FluxEqualsFilter implements FilterEntry {
+public class FluxEqualsFilter implements IFilterEntry {
 
   private String field;
   private String value;

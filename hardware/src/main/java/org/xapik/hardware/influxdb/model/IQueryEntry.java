@@ -1,6 +1,6 @@
 package org.xapik.hardware.influxdb.model;
 
-public interface QueryEntry {
+public interface IQueryEntry {
 
   String getQuery();
 

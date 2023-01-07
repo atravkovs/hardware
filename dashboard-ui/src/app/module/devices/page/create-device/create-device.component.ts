@@ -31,20 +31,22 @@ export class CreateDeviceComponent implements OnInit {
   }
 
   createDevice() {
-    if (this.createDeviceForm.valid) {
-      const newDevice: NewDevice = {
-        name: this.deviceName?.value,
-      };
-
-      this.hardwareRepository.createDevice(newDevice).subscribe({
-        next: (response) => {
-          this.newDeviceResponse = response;
-          this.createDeviceForm.reset();
-        },
-        error: ({ error }: HttpErrorResponse) => {
-          this.errorMessage = error.message;
-        },
-      });
+    if (!this.createDeviceForm.valid) {
+      return;
     }
+
+    const newDevice: NewDevice = {
+      name: this.deviceName?.value,
+    };
+
+    this.hardwareRepository.createDevice(newDevice).subscribe({
+      next: (response) => {
+        this.newDeviceResponse = response;
+        this.createDeviceForm.reset();
+      },
+      error: ({ error }: HttpErrorResponse) => {
+        this.errorMessage = error.message;
+      },
+    });
   }
 }

@@ -58,33 +58,37 @@ export class ProfileComponent implements OnInit {
   }
 
   updateUser(): void {
-    if (this.profileForm.valid && this.storedUser?.email) {
-      const updateDTO = {
-        name: this.name?.value,
-        surname: this.surname?.value,
-      };
-
-      this.userRepository
-        .updateUser(this.storedUser?.email, updateDTO)
-        .subscribe({
-          next: () => {
-            this.displaySuccessMessage('User Successfully updated');
-          },
-          error: ({ error }: HttpErrorResponse) => {
-            this.errorMessage = error.message;
-          },
-        });
+    if (!this.profileForm.valid || !this.storedUser?.email) {
+      return;
     }
-  }
 
-  deleteUser(): void {
-    if (this.storedUser?.email) {
-      this.userRepository.deleteUser(this.storedUser?.email).subscribe({
-        next: () => this.authService.logout(),
+    const updateDTO = {
+      name: this.name?.value,
+      surname: this.surname?.value,
+    };
+
+    this.userRepository
+      .updateUser(this.storedUser?.email, updateDTO)
+      .subscribe({
+        next: () => {
+          this.displaySuccessMessage('User Successfully updated');
+        },
         error: ({ error }: HttpErrorResponse) => {
           this.errorMessage = error.message;
         },
       });
+  }
+
+  deleteUser(): void {
+    if (!this.storedUser?.email) {
+      return;
     }
+
+    this.userRepository.deleteUser(this.storedUser?.email).subscribe({
+      next: () => this.authService.logout(),
+      error: ({ error }: HttpErrorResponse) => {
+        this.errorMessage = error.message;
+      },
+    });
   }
 }

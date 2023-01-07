@@ -1,20 +1,16 @@
 package org.xapik.hardware.device.main.model;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Data
 public class DeviceDTO {
 
-  @Getter
-  @Setter
   private long code;
 
-  @Getter
-  @Setter
   private String name;
 
-  @Getter
-  @Setter
   private long userCount;
 
 }

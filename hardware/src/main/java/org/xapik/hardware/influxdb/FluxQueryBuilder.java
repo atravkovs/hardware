@@ -3,20 +3,20 @@ package org.xapik.hardware.influxdb;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
-import org.xapik.hardware.influxdb.model.QueryEntry;
-import org.xapik.hardware.influxdb.model.filter.FilterEntry;
-import org.xapik.hardware.influxdb.model.range.RangeEntry;
+import org.xapik.hardware.influxdb.model.IQueryEntry;
+import org.xapik.hardware.influxdb.model.filter.IFilterEntry;
+import org.xapik.hardware.influxdb.model.range.IRangeEntry;
 
-public class FluxQueryBuilder implements QueryBuilder {
-
+/**
+ * Builder to dynamically generate Flux queries to InfluxDB
+ */
+public class FluxQueryBuilder implements IQueryBuilder {
   @Getter
   private final String bucket;
-
   @Getter
-  private final List<RangeEntry> ranges;
-
+  private final List<IRangeEntry> ranges;
   @Getter
-  private final List<FilterEntry> filters;
+  private final List<IFilterEntry> filters;
 
   public FluxQueryBuilder(String bucket) {
     this.bucket = bucket;
@@ -25,19 +25,24 @@ public class FluxQueryBuilder implements QueryBuilder {
   }
 
   @Override
-  public FluxQueryBuilder addRange(RangeEntry range) {
+  public FluxQueryBuilder addRange(IRangeEntry range) {
     this.ranges.add(range);
 
     return this;
   }
 
   @Override
-  public FluxQueryBuilder addFilter(FilterEntry filterEntry) {
+  public FluxQueryBuilder addFilter(IFilterEntry filterEntry) {
     this.filters.add(filterEntry);
 
     return this;
   }
 
+  /**
+   * Converts builder parameters to Flux Query
+   *
+   * @return InfluxDB Flux Query
+   */
   @Override
   public String build() {
     String query = this.buildFrom();
@@ -49,7 +54,7 @@ public class FluxQueryBuilder implements QueryBuilder {
     return query;
   }
 
-  private String buildQueries(List<? extends QueryEntry> queryEntries) {
+  private String buildQueries(List<? extends IQueryEntry> queryEntries) {
     var entryList = queryEntries.stream().map(entry -> "|> " + entry.getQuery()).toList();
 
     return String.join("\n", entryList);
@@ -58,6 +63,4 @@ public class FluxQueryBuilder implements QueryBuilder {
   private String buildFrom() {
     return "from(bucket: \"" + this.getBucket() + "\")";
   }
-
-
 }
