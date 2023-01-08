@@ -12,7 +12,6 @@ import com.influxdb.client.domain.PermissionResource.TypeEnum;
 import java.util.List;
 import com.influxdb.client.QueryApi;
 import lombok.RequiredArgsConstructor;
-import com.influxdb.client.InfluxDBClient;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xapik.hardware.device.stats.model.OrganizationNotFoundException;
@@ -26,7 +25,10 @@ import org.xapik.hardware.influxdb.model.range.FluxRange;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StatisticsService {
 
-  private final InfluxDBClient influxDBClient;
+  private final QueryApi queryApi;
+  private final BucketsApi bucketsApi;
+  private final OrganizationsApi organizationsApi;
+  private final AuthorizationsApi authorizationsApi;
 
   private final String ORGANIZATION_ID = "at20057";
 
@@ -37,14 +39,10 @@ public class StatisticsService {
         .addFilter(new FluxEqualsFilter("_measurement", query.measurement()))
         .addFilter(new FluxEqualsFilter("_field", query.field())).build();
 
-    QueryApi queryApi = influxDBClient.getQueryApi();
-
     return queryApi.query(flux, mapTo);
   }
 
   public Organization findOrganizationByName(String org) {
-    OrganizationsApi organizationsApi = this.influxDBClient.getOrganizationsApi();
-
     var optional = organizationsApi.findOrganizations().stream()
         .filter(organization -> organization.getName().equals(org)).findFirst();
 
@@ -56,15 +54,12 @@ public class StatisticsService {
   }
 
   public void createBucket(String bucketName) {
-    BucketsApi bucketsApi = this.influxDBClient.getBucketsApi();
     var organization = this.findOrganizationByName(ORGANIZATION_ID);
 
     bucketsApi.createBucket(bucketName, organization.getId());
   }
 
   public String generateToken(String bucketName) {
-    AuthorizationsApi authorizationsApi = this.influxDBClient.getAuthorizationsApi();
-
     var organization = this.findOrganizationByName(ORGANIZATION_ID);
 
     List<Permission> permissions = List.of(

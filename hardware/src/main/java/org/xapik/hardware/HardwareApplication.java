@@ -7,10 +7,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-//@EnableGlobalMethodSecurity(
-//    prePostEnabled = true,
-//    securedEnabled = true,
-//    jsr250Enabled = true)
 public class HardwareApplication {
 
   public static void main(String[] args) {
