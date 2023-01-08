@@ -3,7 +3,6 @@ import { HardwareRepositoryService } from './../../services/hardware.repository.
 import { NewDevice } from './../../models/new-device.model';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NewDeviceResponse } from '../../models/new-device-response.model';
 
 @Component({
