@@ -15,6 +15,9 @@ import { TokenService } from '../../shared/authentication/services/token.service
 export class AuthGuard implements CanActivate {
   constructor(private tokenService: TokenService, private router: Router) {}
 
+  /**
+   * Checks whether user has needed role and is logged in
+   */
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

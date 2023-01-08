@@ -44,6 +44,9 @@ export class DeviceListComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Generates an array of given length
+   */
   numSequence(n: number): Array<number> {
     return Array(n);
   }

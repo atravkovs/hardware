@@ -50,6 +50,9 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Displays message and auto-hides it after 2.5 seconds
+   */
   displaySuccessMessage(message: string) {
     this.successMessage = message;
     setTimeout(() => {

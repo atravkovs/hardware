@@ -14,6 +14,9 @@ export class AuthInterceptor implements HttpInterceptor {
     public tokenService: TokenService
   ) {}
 
+  /**
+   * Adds Bearer token to each request
+   */
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler

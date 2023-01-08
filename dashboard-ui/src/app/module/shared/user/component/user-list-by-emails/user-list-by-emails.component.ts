@@ -55,6 +55,9 @@ export class UserListByEmailsComponent
     );
   }
 
+  /**
+   * Refetch list of users, when emails are updated
+   */
   ngOnChanges(_changes: SimpleChanges): void {
     this.email$.next(this.emails);
   }

@@ -28,6 +28,9 @@ public class UserService {
     this.passwordEncoder = passwordEncoder;
   }
 
+  /**
+   * Gets all users, or only those that have matching name / surname / e-mail to searchQuery if provided
+   */
   public Page<UserEntity> getUsers(int pageNumber, int pageSize, String searchQuery) {
     var pageable = Pageable.ofSize(pageSize).withPage(pageNumber);
 

@@ -28,6 +28,9 @@ export class AuthService {
     return user.role === UserRole.Admin;
   }
 
+  /**
+   * Logs in user, sets token and redirects to home page
+   */
   login(loginDto: LoginDTO) {
     return this.userRepository.login(loginDto).pipe(
       tap((jwtResponse) => this.tokenService.setToken(jwtResponse.jwtToken)),
@@ -35,6 +38,9 @@ export class AuthService {
     );
   }
 
+  /**
+   * Creates new user and automatically logs in
+   */
   register(registrationDto: RegistrationDTO) {
     return this.userRepository
       .register(registrationDto)
@@ -43,6 +49,9 @@ export class AuthService {
       );
   }
 
+  /**
+   * Logouts and redirects to main page of unauthorized user
+   */
   logout() {
     this.tokenService.logout();
     this.router.navigate(['/login']);

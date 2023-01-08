@@ -20,21 +20,6 @@ public class DeviceService {
   private final DeviceRepository deviceRepository;
   private final StatisticsService statisticsService;
 
-  private DeviceDTO getDeviceDto(DeviceEntity deviceEntity) {
-    DeviceDTO deviceDTO = new DeviceDTO();
-    deviceDTO.setCode(deviceEntity.getCode());
-    deviceDTO.setName(deviceEntity.getName());
-
-    var deviceUsers = deviceEntity.getDeviceUsers();
-    if (deviceUsers == null) {
-      deviceDTO.setUserCount(0);
-    } else {
-      deviceDTO.setUserCount(deviceUsers.size());
-    }
-
-    return deviceDTO;
-  }
-
   public Page<DeviceDTO> getDevices(int pageNumber, int pageSize, String query) {
     var pageable = Pageable.ofSize(pageSize).withPage(pageNumber);
 
@@ -56,6 +41,10 @@ public class DeviceService {
     return getDeviceDto(deviceRepository.save(deviceEntity));
   }
 
+  /**
+   * Creates device in Hardware DB and InfluxDB
+   * Creates permission and token to push device statistics
+   */
   public NewDeviceResponse initialiseDevice(NewDeviceDTO newDeviceDTO) {
     var newDevice = this.createDevice(newDeviceDTO);
     this.statisticsService.createBucket("d" + newDevice.getCode());
@@ -82,6 +71,21 @@ public class DeviceService {
     var device = getDevice(deviceCode);
 
     return getDeviceDto(device);
+  }
+
+  private DeviceDTO getDeviceDto(DeviceEntity deviceEntity) {
+    DeviceDTO deviceDTO = new DeviceDTO();
+    deviceDTO.setCode(deviceEntity.getCode());
+    deviceDTO.setName(deviceEntity.getName());
+
+    var deviceUsers = deviceEntity.getDeviceUsers();
+    if (deviceUsers == null) {
+      deviceDTO.setUserCount(0);
+    } else {
+      deviceDTO.setUserCount(deviceUsers.size());
+    }
+
+    return deviceDTO;
   }
 
 }

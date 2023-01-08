@@ -1,6 +1,5 @@
 package org.xapik.hardware.authorization;
 
-import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,7 +14,12 @@ public class AuthorizationService {
 
   private final DeviceUserService deviceUserService;
 
-  public boolean canSeeDevice(long deviceId) {
+  /**
+   * Device can be retrieved only by administrators, system functions and assigned users
+   * @param deviceCode Device Code
+   * @return whether it is allowed to see requested device
+   */
+  public boolean canSeeDevice(long deviceCode) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
     if (auth == null) {
@@ -28,7 +32,7 @@ public class AuthorizationService {
 
     User principal = (User) auth.getPrincipal();
 
-    return deviceUserService.isDeviceAssignedToUser(deviceId, principal.getUsername());
+    return deviceUserService.isDeviceAssignedToUser(deviceCode, principal.getUsername());
   }
 
 }

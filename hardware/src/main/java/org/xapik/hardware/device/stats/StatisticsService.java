@@ -30,8 +30,11 @@ public class StatisticsService {
   private final OrganizationsApi organizationsApi;
   private final AuthorizationsApi authorizationsApi;
 
-  private final String ORGANIZATION_ID = "at20057";
+  private static final String ORGANIZATION_ID = "at20057";
 
+  /**
+   * Retrieves statistics of given type
+   */
   public <T> List<T> getStatistics(QueryConfiguration query, Class<T> mapTo) {
     IQueryBuilder queryBuilder = new FluxQueryBuilder("d" + query.deviceCode());
 
@@ -59,6 +62,9 @@ public class StatisticsService {
     bucketsApi.createBucket(bucketName, organization.getId());
   }
 
+  /**
+   * Generates WRITE token to provided bucket
+   */
   public String generateToken(String bucketName) {
     var organization = this.findOrganizationByName(ORGANIZATION_ID);
 

@@ -50,6 +50,9 @@ export class UserListComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * Generates an array of given length
+   */
   numSequence(n: number): Array<number> {
     return Array(n);
   }
