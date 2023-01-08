@@ -79,7 +79,9 @@ public class DeviceService {
   }
 
   public DeviceDTO getDeviceByCode(long deviceCode) {
-    return getDeviceDto(getDevice(deviceCode));
+    var device = getDevice(deviceCode);
+
+    return getDeviceDto(device);
   }
 
 }

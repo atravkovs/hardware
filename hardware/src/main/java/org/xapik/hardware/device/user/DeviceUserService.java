@@ -20,6 +20,16 @@ public class DeviceUserService {
   private final DeviceService deviceService;
   private final DeviceUserRepository deviceUserRepository;
 
+  public boolean isDeviceAssignedToUser(long deviceCode, String userEmail) {
+    try {
+      getDeviceUser(deviceCode, userEmail);
+
+      return true;
+    } catch (UserDeviceDoesNotExistException e) {
+      return false;
+    }
+  }
+
   public List<DeviceUserDTO> getAssignedDevices(long deviceCode) {
     DeviceEntity device = deviceService.getDevice(deviceCode);
 

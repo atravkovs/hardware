@@ -6,10 +6,12 @@ import javax.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.xapik.hardware.authorization.AuthorizationService;
 import org.xapik.hardware.device.main.model.DeviceDTO;
 import org.xapik.hardware.device.main.model.NewDeviceDTO;
 
@@ -24,7 +26,7 @@ import org.xapik.hardware.device.user.DeviceUserService;
 public class DeviceController {
 
   private final DeviceService deviceService;
-  private final StatisticsService statisticsService;
+  private final AuthorizationService authorizationService;
 
   @GetMapping("/list")
   @PreAuthorize("hasAuthority('admin')")
@@ -49,6 +51,10 @@ public class DeviceController {
 
   @GetMapping("/{deviceCode}")
   public ResponseEntity<DeviceDTO> getDevice(@PathVariable Integer deviceCode) {
+    if (!authorizationService.canSeeDevice(deviceCode)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
     return ResponseEntity.ok(this.deviceService.getDeviceByCode(deviceCode.longValue()));
   }
 

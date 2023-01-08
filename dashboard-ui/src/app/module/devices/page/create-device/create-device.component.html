@@ -56,8 +56,27 @@
 
       <p>
         To start capturing device statistics, please run:
+      </p>
+      <p>
+        Cargo:
         <code>
           cargo run -- --host http://localhost:8086/ --device
+          {{ newDeviceResponse.device.code }} --token
+          {{ newDeviceResponse.token }}
+        </code>
+      </p>
+      <p>
+        Windows:
+        <code>
+          .\stats-client.exe --host http://localhost:8086/ --device
+          {{ newDeviceResponse.device.code }} --token
+          {{ newDeviceResponse.token }}
+        </code>
+      </p>
+      <p>
+        Linux:
+        <code>
+          ./stats-client --host http://localhost:8086/ --device
           {{ newDeviceResponse.device.code }} --token
           {{ newDeviceResponse.token }}
         </code>

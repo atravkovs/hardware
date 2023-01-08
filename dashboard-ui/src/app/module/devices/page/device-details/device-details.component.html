@@ -12,6 +12,11 @@
           {{ deviceError.error.message }}
         </div>
       </div>
+      <div class="col" *ngIf="deviceError?.status === 403">
+        <div class="alert alert-danger" role="alert">
+          You don't have permission to view this device data!
+        </div>
+      </div>
     </div>
   </ng-container>
 

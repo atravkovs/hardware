@@ -29,6 +29,10 @@ export class DeviceDetailsComponent implements OnInit {
     private authService: AuthService
   ) {}
 
+  stringify(text: any) {
+    return JSON.stringify(text);
+  }
+
   ngOnInit(): void {
     this.deviceId$ = this.route.params.pipe(
       map((params) => {
