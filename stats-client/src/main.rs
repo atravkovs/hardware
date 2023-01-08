@@ -42,9 +42,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut scheduler = AsyncScheduler::new();
     let client = HardwareClient::new(args.host, String::from("at20057"), args.token, args.device);
 
+    /**
+     * Creates "Atomic Reference Counted", to share HardwareClient across multiple threads (one thread per cycle)
+     * It's done to avoid recreating HardwareClient and it's connection on every thread execution
+     */
     let client_arc = Arc::new(client);
 
     scheduler.every(args.interval.second()).run(move || {
+        /**
+         * Gets instance of client for current thread execution
+         */
         let cc = client_arc.clone();
 
         async move {
